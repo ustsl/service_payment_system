@@ -1,5 +1,7 @@
 from datetime import datetime
+from typing import List
 from uuid import UUID
+
 from pydantic import BaseModel, field_validator
 
 from src.settings import PaymentSystems, ServiceSystems
@@ -9,12 +11,8 @@ from src.settings import PaymentSystems, ServiceSystems
 #########################
 
 
-class InvoiceId(BaseModel):
-    uuid: UUID
-
-
 class InvoiceCreateBody(BaseModel):
-    invoice_id: str
+    uuid: str
     user_id: str
     payment_system_name: PaymentSystems
     service_system_name: ServiceSystems
@@ -27,6 +25,11 @@ class InvoiceCreateBody(BaseModel):
         return v
 
 
-class InvoiceStatusBody(InvoiceId, InvoiceCreateBody):
+class InvoiceStatusBody(InvoiceCreateBody):
     is_paid: bool
     time_create: datetime
+
+
+class InvoiceList(BaseModel):
+    total: int
+    result: List[InvoiceStatusBody]

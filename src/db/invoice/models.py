@@ -1,8 +1,9 @@
-from sqlalchemy import Column, String, Boolean, Numeric, Enum
+import uuid
+
+from sqlalchemy import Boolean, Column, Enum, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import validates
-import uuid
 
 from src.db.models import TimeModel
 from src.settings import PaymentSystems, ServiceSystems
@@ -10,13 +11,11 @@ from src.settings import PaymentSystems, ServiceSystems
 
 class InvoiceModel(TimeModel):
     __tablename__ = "invoice"
-
-    uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    invoice_id = Column(String, nullable=False, unique=True)
+    uuid = Column(String, nullable=False, unique=True, primary_key=True)
     user_id = Column(String, nullable=False)
     payment_system_name = Column(Enum(PaymentSystems), nullable=False)
     service_system_name = Column(Enum(ServiceSystems), nullable=False)
-    is_paid = Column(Boolean, default=True, nullable=True)
+    is_paid = Column(Boolean, default=False, nullable=False)
     amount = Column(Numeric(10, 2), nullable=False, default=0.00)
 
     @validates("payment_system_name")

@@ -1,7 +1,8 @@
 import uuid
-from sqlalchemy.ext.asyncio import AsyncSession
+
+from sqlalchemy import desc, func, select, update
 from sqlalchemy.exc import NoResultFound
-from sqlalchemy import desc, select, update, func
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
 from src.settings import PAGINATION_PAGE_SIZE
@@ -28,7 +29,11 @@ class BaseDAL:
             return {"error": error_msg}
 
     async def list(
-        self, page_size: int = PAGINATION_PAGE_SIZE, offset: int = 0, order_param="uuid"
+        self,
+        page_size: int = PAGINATION_PAGE_SIZE,
+        offset: int = 0,
+        order_param="uuid",
+        filters: dict = {},
     ):
         try:
             query = (
@@ -37,6 +42,11 @@ class BaseDAL:
                 .limit(page_size)
                 .offset(offset)
             )
+
+            # Apply filters
+            for attr, value in filters.items():
+                query = query.where(getattr(self.model, attr) == value)
+
             db_query_result = await self.db_session.execute(query)
             result = db_query_result.scalars().all()
 
@@ -45,27 +55,22 @@ class BaseDAL:
             total_count = total_count_result.scalar()
 
             return {"result": result, "total": total_count}
-
         except Exception as e:
-            await self.db_session.rollback()
-            error_msg = f"Error listing prompts: {str(e)}"
-            return {"error": error_msg}
+            print(f"An error occurred: {e}")
+            return None
 
-    async def get(self, id: uuid.UUID):
+    async def get(self, uuid: str):
 
         try:
-            query = select(self.model).where(
-                self.model.uuid == id, self.model.is_deleted == False
-            )
+            query = select(self.model).where(self.model.uuid == uuid)
             db_query_result = await self.db_session.execute(query)
-            prompt = db_query_result.scalar_one()
-
-            return prompt
+            res = db_query_result.scalar_one()
+            return res
         except NoResultFound:
-            return {"error": "Prompt not found", "status": 404}
+            return {"error": "Not found", "status": 404}
         except Exception as e:
             await self.db_session.rollback()
-            return {"error": f"Error retrieving prompt: {str(e)}", "status": 500}
+            return {"error": f"Error: {str(e)}", "status": 500}
 
     async def update(self, uuid: uuid.UUID, **kwargs):
         try:
