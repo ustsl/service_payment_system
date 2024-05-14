@@ -1,0 +1,4 @@
+- create base admin functions: block user, block prompt
+- create admin-actions for current_functions (make throw getting user_data and using it for next actions)
+- update tests for another admin methods
+- test restrictions (blocked acc)
