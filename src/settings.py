@@ -42,12 +42,12 @@ QUICKSPEAK_SERVICE_URL = os.getenv("QUICKSPEAK_SERVICE_URL")
 
 TEST_DATABASE_URL = env.str(
     "TEST_DATABASE_URL",
-    default=f"postgresql+asyncpg://{DB_USER_TEST}:{DB_PASSWORD_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/imvo_payment_db_test",
+    default=f"postgresql+asyncpg://{DB_USER_TEST}:{DB_PASSWORD_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}",
 )
 
 MAIN_DATABASE_URL = env.str(
     "REAL_DATABASE_URL",
-    default=f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/imvo_payment_db",
+    default=f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
 )
 
 

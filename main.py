@@ -9,7 +9,7 @@ alembic_cfg = Config("alembic.ini")
 command.upgrade(alembic_cfg, "head")
 
 # Запуск Uvicorn
-config = UvicornConfig("src.main:app", host="0.0.0.0", port=8000, reload=True)
+config = UvicornConfig("src.main:app", host="127.0.5.9", port=52608, reload=True)
 server = Server(config)
 
 if __name__ == "__main__":
