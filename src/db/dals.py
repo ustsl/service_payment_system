@@ -32,7 +32,7 @@ class BaseDAL:
         self,
         page_size: int = PAGINATION_PAGE_SIZE,
         offset: int = 0,
-        order_param="uuid",
+        order_param="time_create",
         filters: dict = {},
     ):
         try:

@@ -13,5 +13,5 @@ def get_api_request_data_for_change_balance(
         project = CreateQuickspeakRequest
     elif service_name == "imvo":
         project = CreateImvoRequest
-
-    return factory(project=project, acc_id=acc_id, balance=balance)
+    data = factory(project=project, acc_id=acc_id, balance=balance)
+    return data

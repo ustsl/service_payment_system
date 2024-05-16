@@ -5,6 +5,8 @@ from src.settings import (
     AIHANDLER_SERVICE_URL,
     QUICKSPEAK_SERVICE_TOKEN,
     QUICKSPEAK_SERVICE_URL,
+    AIHANDLER_PAYMENT_TOKEN,
+    QUICKSPEAK_PAYMENT_TOKEN,
 )
 
 
@@ -21,6 +23,10 @@ class CreateRequestData(ABC):
 
     @abstractmethod
     def create_url() -> str:
+        pass
+
+    @abstractmethod
+    def create_token() -> str:
         pass
 
     @abstractmethod
@@ -44,6 +50,9 @@ class CreateImvoRequest(CreateRequestData):
     def create_body(self):
         return {"balance": self.balance}
 
+    def create_token(self):
+        return "FgQQgE2rvvfJbz0rahMyIF6ULgVeZHqpANxN"  # AIHANDLER_PAYMENT_TOKEN
+
 
 class CreateQuickspeakRequest(CreateRequestData):
 
@@ -61,10 +70,14 @@ class CreateQuickspeakRequest(CreateRequestData):
     def create_body(self):
         return {"balance": self.balance, "account": self.acc_id}
 
+    def create_token(self):
+        return QUICKSPEAK_PAYMENT_TOKEN
+
 
 def factory(project: CreateRequestData, acc_id: str, balance: float) -> dict:
     project = project(acc_id, balance)
     headers = project.create_headers()
     body = project.create_body()
     url = project.create_url()
-    return {"body": body, "headers": headers, "url": url}
+    token = project.create_token()
+    return {"body": body, "headers": headers, "url": url, "token": token}

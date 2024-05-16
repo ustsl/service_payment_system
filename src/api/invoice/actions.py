@@ -32,7 +32,6 @@ async def _show_invoices(
 ) -> InvoiceList:
     filters = {}
     if type(is_paid) is bool:
-        print("bool")
         filters["is_paid"] = is_paid
     obj_dal = InvoiceDAL(db, InvoiceModel)
     results = await obj_dal.list(offset=offset, filters=filters)
