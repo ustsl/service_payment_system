@@ -51,7 +51,7 @@ class CreateImvoRequest(CreateRequestData):
         return {"balance": self.balance}
 
     def create_token(self):
-        return "FgQQgE2rvvfJbz0rahMyIF6ULgVeZHqpANxN"  # AIHANDLER_PAYMENT_TOKEN
+        return AIHANDLER_PAYMENT_TOKEN
 
 
 class CreateQuickspeakRequest(CreateRequestData):
