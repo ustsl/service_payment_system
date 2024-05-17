@@ -65,10 +65,10 @@ class CreateQuickspeakRequest(CreateRequestData):
         return {"Authorization": f"Token: {self.token}"}
 
     def create_url(self):
-        return QUICKSPEAK_SERVICE_URL
+        return f"{QUICKSPEAK_SERVICE_URL}/{self.acc_id}/"
 
     def create_body(self):
-        return {"balance": self.balance, "account": self.acc_id}
+        return {"amount": self.balance}
 
     def create_token(self):
         return QUICKSPEAK_PAYMENT_TOKEN
