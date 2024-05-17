@@ -70,12 +70,19 @@ async def _change_balance(result: InvoiceModel) -> bool:
         balance=float(result.amount),
     )
 
+    print(data)
+    print(312313123)
+
     async with httpx.AsyncClient() as client:
         response = await client.put(
             url=data.get("url"),
             headers=data.get("headers"),
             json=data.get("body"),
         )
+
+        print(response)
+        print(response.status_code)
+        print(response.json())
 
     if response.status_code == 200:
         return True

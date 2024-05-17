@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.settings import AIHANDLER_PAYMENT_TOKEN
+
 from src.db.session import get_db
 
 from .actions import _invoice_confirmation
@@ -17,7 +17,9 @@ async def confirm_endpoint(
     token: str = Form(...),
     db: AsyncSession = Depends(get_db),
 ):
-    return await _invoice_confirmation(uuid=invoice_id, db=db, token=token)
+    res = await _invoice_confirmation(uuid=invoice_id, db=db, token=token)
+    print(res)
+    return res
 
 
 @confirmation_router.post("/", response_model=InvoiceResultStatus)

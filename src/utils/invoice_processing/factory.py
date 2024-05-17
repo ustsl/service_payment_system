@@ -62,10 +62,11 @@ class CreateQuickspeakRequest(CreateRequestData):
         self.balance = balance
 
     def create_headers(self):
-        return {"Authorization": f"Token: {self.token}"}
+        return {"Authorization": f"{self.token}"}
 
     def create_url(self):
-        return f"{QUICKSPEAK_SERVICE_URL}/{self.acc_id}/"
+
+        return f"https://api.qsbot.app/v1/payments/increase/{self.acc_id}/"
 
     def create_body(self):
         return {"amount": self.balance}
