@@ -31,8 +31,8 @@ async def _invoice_confirmation(
             if result.is_paid:
                 return InvoiceResultStatus(status=False, message="Invoice already paid")
 
-            # if not await _is_token_valid(token, result):
-            #     return InvoiceResultStatus(status=False, message="Invalid token")
+            if not await _is_token_valid(token, result):
+                return InvoiceResultStatus(status=False, message="Invalid token")
 
             if not await _change_balance(result):
                 return InvoiceResultStatus(
