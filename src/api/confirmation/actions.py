@@ -31,8 +31,8 @@ async def _invoice_confirmation(
             if result.is_paid:
                 return InvoiceResultStatus(status=False, message="Invoice already paid")
 
-            if not await _is_token_valid(token, result):
-                return InvoiceResultStatus(status=False, message="Invalid token")
+            # if not await _is_token_valid(token, result):
+            #     return InvoiceResultStatus(status=False, message="Invalid token")
 
             if not await _change_balance(result):
                 return InvoiceResultStatus(
@@ -64,14 +64,12 @@ async def _is_token_valid(token: str, result: InvoiceModel) -> bool:
 
 async def _change_balance(result: InvoiceModel) -> bool:
     service = result.service_system_name.name.lower()
+
     data = get_api_request_data_for_change_balance(
         service_name=service,
         acc_id=result.user_id,
         balance=float(result.amount),
     )
-
-    print(data)
-    print(312313123)
 
     async with httpx.AsyncClient() as client:
         response = await client.put(
@@ -79,10 +77,6 @@ async def _change_balance(result: InvoiceModel) -> bool:
             headers=data.get("headers"),
             json=data.get("body"),
         )
-
-        print(response)
-        print(response.status_code)
-        print(response.json())
 
     if response.status_code == 200:
         return True

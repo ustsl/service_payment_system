@@ -8,7 +8,6 @@ from .factory import (
 def get_api_request_data_for_change_balance(
     service_name: str, acc_id: str, balance: float
 ):
-
     if service_name == "quickspeak":
         project = CreateQuickspeakRequest
     elif service_name == "imvo":

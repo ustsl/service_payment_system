@@ -25,5 +25,5 @@ async def show_invoices(
 
 @invoice_router.get("/{uuid}")
 async def get_invoice(uuid: str, db: AsyncSession = Depends(get_db)):
-    res = await _show_invoice(uu, db)
+    res = await _show_invoice(uuid, db)
     return res

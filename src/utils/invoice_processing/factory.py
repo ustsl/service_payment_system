@@ -65,7 +65,6 @@ class CreateQuickspeakRequest(CreateRequestData):
         return {"Authorization": f"{self.token}"}
 
     def create_url(self):
-
         return f"https://api.qsbot.app/v1/payments/increase/{self.acc_id}/"
 
     def create_body(self):
